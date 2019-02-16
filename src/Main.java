@@ -52,7 +52,6 @@ public class Main extends JFrame {
 		
   		public boolean set_second_vertex = false;
   		
-  		public boolean done = false;
 		
 		public MapPanel(String img_path) {
 			img = new ImageIcon(img_path).getImage();
@@ -96,7 +95,7 @@ public class Main extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			done = true;
+			
 		}
 
 		@Override
@@ -132,7 +131,7 @@ public class Main extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			editing = true;
+			set = true;
 		}
 
 		@Override
@@ -145,8 +144,6 @@ public class Main extends JFrame {
 	MapPanel panel;
 	
 	
-	int currVX = 929;
-	int currVY = 823;
 	
 	public Main() {
 		
@@ -156,11 +153,7 @@ public class Main extends JFrame {
 		
 		panel.repaint();
 		
-		for (Vertex v : network.vertices) {
-			if(v.x == currVX && v.y == currVY) {
-				v.color = Color.RED;
-			}
-		}
+		
 		
 		while(control) {
 			
@@ -215,14 +208,14 @@ public class Main extends JFrame {
 						
 						
 					}
+					
 					panel.set = false;
-					System.out.println("panel.set -> false");
 					
 					
 					
 				}else {
 					
-					if(panel.editing) {
+					/*if(panel.editing) {
 						panel.editing = false;
 						for (Vertex v : network.vertices) {
 							//target = v;
@@ -242,14 +235,14 @@ public class Main extends JFrame {
 					}
 					
 					if(panel.done) {
-						String output = "";
+						String output = ",";
 						for (int[] is : connecting_vertices) {
 							output += is[0] + "-" + is[1] + "#";
 						}
 						output = output.substring(0,output.length()-1);
 						System.out.println(output);
 						return;
-					}
+					}*/
 					
 				}
 				
