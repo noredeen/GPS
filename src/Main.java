@@ -30,17 +30,12 @@ public class Main extends JFrame {
 	
 	private Graph network = new Graph();
 	
-	ArrayList<int[]> lines = new ArrayList<int[]>();
+	private Vertex start = null;
 	
-	Vertex start = null;
-	Vertex target = null;
+	private Vertex target = null;
 	
+	private boolean control = true;
 	
-	
-	//ArrayList<int[]> vertices = new ArrayList<int[]>();
-	//ArrayList<Vertex<String>> vertices = new ArrayList<Vertex<String>>();
-	
-	boolean control = true;
 	
 	private class MapPanel extends JPanel implements MouseListener, KeyListener{
 		
@@ -51,10 +46,6 @@ public class Main extends JFrame {
 		public boolean set_first_vertex = true;
 		
   		public boolean set_second_vertex = false;
-		
-  		public boolean find_path = false;
-  		
-		public boolean target_click = false;
 		
 		public MapPanel(String img_path) {
 			img = new ImageIcon(img_path).getImage();
@@ -69,9 +60,11 @@ public class Main extends JFrame {
 		 
 		
 		public void paintComponent(Graphics g) {
+			
 			g.drawImage(img, 0, 0, null);
 			
 			Graphics2D g2 = (Graphics2D) g;
+			
 			g2.setStroke(new BasicStroke(3));
 			
 			for (Vertex vertex  : network.vertices) {
@@ -85,12 +78,6 @@ public class Main extends JFrame {
 				
 			}
 			
-			/*for (int[] line : lines) {
-				g.setColor(Color.BLACK);
-				g.drawLine(line[0], line[1], line[2], line[3]);
-			}
-			
-			*/
 			
 			repaint();
 			
@@ -138,7 +125,6 @@ public class Main extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("sss");
 			panel.set = true;
 		}
 
@@ -153,40 +139,24 @@ public class Main extends JFrame {
 	
 	public Main() {
 		
-		panel = new MapPanel("imgs/map.jpg");
+		setUpGraphics();
 		
-		this.setSize(2000, 1280);
-		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		this.add(panel);
-		
-		this.setLocationRelativeTo(null);
-		
-		//The frame IS a listener because it implements MouseListener
-		panel.addMouseListener(panel);
-		
-		panel.addKeyListener(panel);
-		
-		this.setVisible(true);
-		
-		panel.setFocusable(true);
-		
-		ArrayList<ArrayList<Integer>> airports = new ArrayList<ArrayList<Integer>>();
-		
-		getVertices();
+		buildVerticesEdges();
 		
 		panel.repaint();
 		
 		while(control) {
+			
 			try {
 				Thread.sleep(30);
 			}
+			
 			catch (Exception e) {
 				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
 				
-				
-			}	
+			}
+			
 				
 				//System.out.println((int)panel.getMousePosition().getX() + " - " + (int)panel.getMousePosition().getY());
 				if(panel.set) {
@@ -246,7 +216,29 @@ public class Main extends JFrame {
 		
 	}
 	
-	public void getVertices() {
+	
+	public void setUpGraphics() {
+		panel = new MapPanel("imgs/map.jpg");
+		
+		this.setSize(2000, 1280);
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.add(panel);
+		
+		this.setLocationRelativeTo(null);
+		
+		//The frame IS a listener because it implements MouseListener
+		panel.addMouseListener(panel);
+		
+		panel.addKeyListener(panel);
+		
+		this.setVisible(true);
+		
+		panel.setFocusable(true);
+	}
+	
+	public void buildVerticesEdges() {
 		
 		FileReader stream = null;
 		try {
