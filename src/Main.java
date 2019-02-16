@@ -20,6 +20,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.omg.CORBA.NVList;
+
 public class Main extends JFrame {
 
 	
@@ -36,6 +38,7 @@ public class Main extends JFrame {
 	
 	private boolean control = true;
 	
+	private ArrayList<int[]> connecting_vertices = new ArrayList<int[]>();
 	
 	private class MapPanel extends JPanel implements MouseListener, KeyListener{
 		
@@ -43,9 +46,13 @@ public class Main extends JFrame {
 		
 		public boolean set = false;
 		
+		public boolean editing = true;
+		
 		public boolean set_first_vertex = true;
 		
   		public boolean set_second_vertex = false;
+  		
+  		public boolean done = false;
 		
 		public MapPanel(String img_path) {
 			img = new ImageIcon(img_path).getImage();
@@ -89,7 +96,7 @@ public class Main extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			//clicked = true;
+			done = true;
 		}
 
 		@Override
@@ -125,7 +132,7 @@ public class Main extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			panel.set = true;
+			editing = true;
 		}
 
 		@Override
@@ -137,6 +144,10 @@ public class Main extends JFrame {
 	
 	MapPanel panel;
 	
+	
+	int currVX = 929;
+	int currVY = 823;
+	
 	public Main() {
 		
 		setUpGraphics();
@@ -144,6 +155,12 @@ public class Main extends JFrame {
 		buildVerticesEdges();
 		
 		panel.repaint();
+		
+		for (Vertex v : network.vertices) {
+			if(v.x == currVX && v.y == currVY) {
+				v.color = Color.RED;
+			}
+		}
 		
 		while(control) {
 			
@@ -179,7 +196,7 @@ public class Main extends JFrame {
 					
 					
 					for (Vertex v : network.vertices) {
-						target = v;
+						//target = v;
 						if(v.intersects((int)panel.getMousePosition().getX(), (int)panel.getMousePosition().getY(), 1, 1)) {
 							v.color = Color.RED;
 							if(panel.set_first_vertex) {
@@ -203,7 +220,40 @@ public class Main extends JFrame {
 					
 					
 					
+				}else {
+					
+					if(panel.editing) {
+						panel.editing = false;
+						for (Vertex v : network.vertices) {
+							//target = v;
+							try {
+							if(v.intersects((int)panel.getMousePosition().getX(), (int)panel.getMousePosition().getY(), 1, 1)) {
+								int[] a = new int[2];
+								a[0] = v.x;
+								a[1] = v.y;
+								connecting_vertices.add(a);
+								network.addEdge(v.x, v.y, currVX, currVY);
+								repaint();
+							}
+							}catch(Exception e){
+								
+							}
+						}
+					}
+					
+					if(panel.done) {
+						String output = "";
+						for (int[] is : connecting_vertices) {
+							output += is[0] + "-" + is[1] + "#";
+						}
+						output = output.substring(0,output.length()-1);
+						System.out.println(output);
+						return;
+					}
+					
 				}
+				
+				
 				
 				
 					
