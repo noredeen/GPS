@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.omg.CORBA.NVList;
+
 
 public class Main extends JFrame {
 
@@ -38,7 +38,9 @@ public class Main extends JFrame {
 	
 	private boolean control = true;
 	
+	
 	private ArrayList<int[]> connecting_vertices = new ArrayList<int[]>();
+	
 	
 	private class MapPanel extends JPanel implements MouseListener, KeyListener{
 		
@@ -86,8 +88,6 @@ public class Main extends JFrame {
 			
 			
 			repaint();
-			
-			
 			
 			
 		}
@@ -143,8 +143,6 @@ public class Main extends JFrame {
 	
 	MapPanel panel;
 	
-	
-	
 	public Main() {
 		
 		setUpGraphics();
@@ -168,36 +166,26 @@ public class Main extends JFrame {
 			}
 			
 				
-				//System.out.println((int)panel.getMousePosition().getX() + " - " + (int)panel.getMousePosition().getY());
+				
 				if(panel.set) {
 					
-					/*System.out.println("in");
-					for (Vertex v : network.vertices) {
-					
-						if(v.intersects((int)panel.getMousePosition().getX(), (int)panel.getMousePosition().getY(), 1, 1)) {
-							int[] line = new int[4];
-							line[0] = v.x;
-							line[1] = v.y;
-							line[2] = 1031;
-							line[3] = 730;
-							lines.add(line);
-							break;
-						}
-						
-						
-					}*/
 					
 					
 					for (Vertex v : network.vertices) {
-						//target = v;
+						
+						//find which vertex eas clicked
 						if(v.intersects((int)panel.getMousePosition().getX(), (int)panel.getMousePosition().getY(), 1, 1)) {
 							v.color = Color.RED;
+							//set to first clicked vertex to starting vertex
 							if(panel.set_first_vertex) {
 								start = v;
 								panel.set_first_vertex = false;
 								panel.set_second_vertex = true;
 							}else if (panel.set_second_vertex) {
+								//set second clicked vertex to target vertex
 								target = v;
+								
+								//start searching
 								network.search(start, target);
 								repaint();
 								panel.set_second_vertex = false;
@@ -213,43 +201,8 @@ public class Main extends JFrame {
 					
 					
 					
-				}else {
-					
-					/*if(panel.editing) {
-						panel.editing = false;
-						for (Vertex v : network.vertices) {
-							//target = v;
-							try {
-							if(v.intersects((int)panel.getMousePosition().getX(), (int)panel.getMousePosition().getY(), 1, 1)) {
-								int[] a = new int[2];
-								a[0] = v.x;
-								a[1] = v.y;
-								connecting_vertices.add(a);
-								network.addEdge(v.x, v.y, currVX, currVY);
-								repaint();
-							}
-							}catch(Exception e){
-								
-							}
-						}
-					}
-					
-					if(panel.done) {
-						String output = ",";
-						for (int[] is : connecting_vertices) {
-							output += is[0] + "-" + is[1] + "#";
-						}
-						output = output.substring(0,output.length()-1);
-						System.out.println(output);
-						return;
-					}*/
-					
 				}
 				
-				
-				
-				
-					
 				
 			
 			
@@ -281,6 +234,8 @@ public class Main extends JFrame {
 		panel.setFocusable(true);
 	}
 	
+	
+	//function for setting up graph from txt file
 	public void buildVerticesEdges() {
 		
 		FileReader stream = null;
@@ -290,6 +245,8 @@ public class Main extends JFrame {
 			BufferedReader in = new BufferedReader(stream);
 			
 			String line = "";
+			
+			//once for vertices
 			
 			while((line = in.readLine()) != null) {
 				String[] entry = line.split(",");
@@ -304,6 +261,7 @@ public class Main extends JFrame {
 			
 			line = "";
 			
+			//once again for edges
 			while((line = in.readLine()) != null) {
 				String[] entry = line.split(",");
 				if(entry.length >= 3) {
