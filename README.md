@@ -1,6 +1,6 @@
 # GPS
 
-A small GPS system that finds the shortest path between two locations. Uses **Dijkstra's algorithm (a modified breadth-first search)** for finding the shortest path
+A small GPS system that finds the shortest path between two locations (by Euclidean distance). Uses **Dijkstra's algorithm (a modified breadth-first search)** for finding the shortest path
 
 <p align="center">
 
