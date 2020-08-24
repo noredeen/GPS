@@ -1,6 +1,6 @@
 # GPS
 
-A small GPS system that finds the shortest path between two locations (by Euclidean distance). Uses **Dijkstra's algorithm (a modified breadth-first search)** for finding the shortest path
+A small GPS-like application that finds the shortest path between two locations (via Euclidean distance). Uses **Dijkstra's algorithm (a modified breadth-first search)**, which was written from scratch, to find the shortest path. The nodes represent airports in the region; the connections represent available paths between them.
 
 <p align="center">
 
@@ -8,9 +8,3 @@ A small GPS system that finds the shortest path between two locations (by Euclid
 <img src="https://i.imgur.com/Dy6vwcR.gif" />
 
 </p>
-
-<br>
-
-* The nodes are somewhat accurate representations of civilian airports in the region. The edges are simulated.
-
-* Data for airports prepared manually--no ready dataset used.
